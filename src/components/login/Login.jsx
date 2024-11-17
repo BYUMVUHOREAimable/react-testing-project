@@ -1,55 +1,60 @@
-// Importing Axios for HTTP requests and useState hook from React to manage component state
+// Importing Axios for making HTTP requests and the useState hook from React to manage component state
 import axios from "axios";
 import { useState } from "react";
 
+// Define the Login component
 const Login = () => {
-  // State for handling potential errors, loading status, and storing username, password, and user data
+  // State to manage error message visibility
   const [error, setError] = useState(false);
+  // State to manage loading status when making API requests
   const [loading, setLoading] = useState(false);
+  // State to store the entered username
   const [username, setUsername] = useState("");
+  // State to store the entered password
   const [password, setPassword] = useState("");
+  // State to store the fetched user data
   const [user, setUser] = useState({});
 
-  // Function that handles login button click
+  // Function that is triggered when the login button is clicked
   const handleClick = async (e) => {
-    e.preventDefault(); // Prevents page reload on form submit
-    setLoading(true); // Sets loading state to true when login starts
+    e.preventDefault(); // Prevents the default form submission behavior
+    setLoading(true); // Start loading when login attempt begins
     try {
-      // Simulating an API call to retrieve user data (mocked endpoint)
-      const { data } = await axios.get(
-        "https://jsonplaceholder.typicode.com/users/1"
-      );
-      setUser(data); // Updates user state with fetched data
+      // Simulate an API call to fetch user data
+      const { data } = await axios.get("https://jsonplaceholder.typicode.com/users/1");
+      setUser(data); // Store the fetched user data in the state
+      setError(false); // Reset any error message if the API call succeeds
     } catch {
-      setError(true); // Sets error state to true if API call fails
+      setError(true); // Show an error message if the API call fails
     }
-    setLoading(false); // Resets loading state once API call completes
+    setLoading(false); // Stop loading after the API call completes
   };
 
+  // Render the login form
   return (
     <div className="container">
-      {/* Displaying user's name if available */}
+      {/* Display the user's name if available */}
       <span className="user">{user.name}</span>
       <form>
-        {/* Input for username */}
+        {/* Input for the username */}
         <input
           type="text"
           placeholder="username"
           value={username}
-          onChange={(e) => setUsername(e.target.value)} // Updates username state on input change
+          onChange={(e) => setUsername(e.target.value)} // Update username state on input change
         />
-        {/* Input for password */}
+        {/* Input for the password */}
         <input
           type="password"
           placeholder="password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)} // Updates password state on input change
+          onChange={(e) => setPassword(e.target.value)} // Update password state on input change
         />
         {/* Login button, disabled if username or password is missing */}
         <button disabled={!username || !password} onClick={handleClick}>
-          {loading ? "please wait" : "Login"} {/* Displays loading text if loading */}
+          {loading ? "please wait" : "Login"} {/* Show "please wait" while loading */}
         </button>
-        {/* Error message displayed only when error state is true */}
+        {/* Error message displayed only when there is an error */}
         <span
           data-testid="error"
           style={{ visibility: error ? "visible" : "hidden" }}
@@ -61,4 +66,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Login; // Export the component for use in other files
